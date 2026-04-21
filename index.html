@@ -4,103 +4,210 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>O Que Tem Na Geladeira?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fdf8f5;
-            color: #333;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
+        :root {
+            --primary: #ff6b6b;
+            --primary-hover: #fa5252;
+            --bg-color: #fdf8f5;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --card-bg: #ffffff;
         }
-        h1 { color: #ff6b6b; }
-        p { font-size: 1.1em; color: #555; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .input-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
         textarea {
             width: 100%;
-            height: 100px;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1em;
-            margin-bottom: 15px;
-            box-sizing: border-box;
+            height: 120px;
+            padding: 15px;
+            border: 2px solid #edf2f7;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: var(--text-main);
+            resize: none;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
         }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+        }
+
+        textarea::placeholder {
+            color: #a0aec0;
+        }
+
         button {
-            background-color: #ff6b6b;
+            background-color: var(--primary);
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 1.2em;
-            border-radius: 8px;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background 0.3s;
             width: 100%;
-            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
-        button:hover { background-color: #ff5252; }
-        #loading {
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        button:disabled {
+            background-color: #fab1b1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Animação de Carregamento */
+        .spinner {
             display: none;
-            margin: 20px 0;
-            font-weight: bold;
-            color: #ff6b6b;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
         }
-        #resultado {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-top: 20px;
-            text-align: left;
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .resultado-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             display: none;
+            animation: fadeIn 0.5s ease;
         }
-        /* Espaço para Monetização */
-        .anuncio {
-            background-color: #fff3cd;
-            border: 1px dashed #ffeeba;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilizando o HTML que a IA devolve */
+        .resultado-card h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 20px; border-bottom: 2px solid #fdf8f5; padding-bottom: 10px;}
+        .resultado-card h3 { color: var(--text-main); font-size: 1.3rem; margin: 20px 0 10px 0; }
+        .resultado-card ul, .resultado-card ol { margin-left: 20px; color: var(--text-muted); line-height: 1.8; margin-bottom: 15px;}
+        .resultado-card li { margin-bottom: 8px; }
+        .resultado-card p { color: var(--text-muted); line-height: 1.6; }
+        
+        .erro-msg {
+            color: #d63031;
+            background-color: #ff767522;
             padding: 15px;
-            margin-top: 20px;
             border-radius: 8px;
-            font-size: 0.9em;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            display: none;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <h1>O Que Tem Na Geladeira? 🍳</h1>
-    <p>Digite os ingredientes que estão sobrando e nossa Inteligência Artificial vai criar uma receita incrível para você!</p>
+    <div class="container">
+        <div class="header">
+            <h1>Geladeira Mágica ✨</h1>
+            <p>Diga o que você tem, nós dizemos o que comer.</p>
+        </div>
 
-    <textarea id="ingredientes" placeholder="Ex: 2 ovos, meio pacote de macarrão, queijo ralado e um tomate..."></textarea>
-    
-    <button onclick="gerarReceita()">Criar Minha Receita</button>
+        <div class="input-card">
+            <textarea id="ingredientes" placeholder="Ex: 2 ovos, tomate, cebola e um restinho de queijo..."></textarea>
+            
+            <button id="btn-gerar" onclick="gerarReceita()">
+                <span id="btn-texto">Criar Minha Receita</span>
+                <div id="spinner" class="spinner"></div>
+            </button>
+            <div id="erro" class="erro-msg"></div>
+        </div>
 
-    <div id="loading">👨‍🍳 O Chef IA está pensando na receita... aguarde!</div>
-
-    <div id="resultado"></div>
-
-    <div class="anuncio">
-        <strong>💡 Dica de Cozinha:</strong> Quer facilitar sua vida? Confira as <a href="SEU_LINK_DE_AFILIADO_AMAZON_AQUI" target="_blank">Airfryers em promoção na Amazon</a>! (Links de afiliados rendem comissões).
+        <div id="resultado" class="resultado-card"></div>
     </div>
 
     <script>
         async function gerarReceita() {
             const ingredientes = document.getElementById('ingredientes').value;
-            const btn = document.querySelector('button');
-            const loading = document.getElementById('loading');
+            const btn = document.getElementById('btn-gerar');
+            const btnTexto = document.getElementById('btn-texto');
+            const spinner = document.getElementById('spinner');
             const resultado = document.getElementById('resultado');
+            const divErro = document.getElementById('erro');
 
             if (!ingredientes.trim()) {
-                alert("Por favor, digite alguns ingredientes!");
+                divErro.innerText = "⚠️ Por favor, digite alguns ingredientes antes de continuar.";
+                divErro.style.display = 'block';
                 return;
             }
 
             // Interface de carregamento
+            divErro.style.display = 'none';
             btn.disabled = true;
-            loading.style.display = 'block';
+            btnTexto.style.display = 'none';
+            spinner.style.display = 'block';
             resultado.style.display = 'none';
 
             try {
-                // Chama a nossa API (o Garçom)
                 const response = await fetch('/api/gerar', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -109,18 +216,21 @@
 
                 const data = await response.json();
 
+                if (!response.ok) {
+                    throw new Error(data.error || "Erro desconhecido no servidor.");
+                }
+
                 if (data.receita) {
                     resultado.innerHTML = data.receita;
                     resultado.style.display = 'block';
-                } else {
-                    resultado.innerHTML = "<p>Poxa, ocorreu um erro ao gerar a receita. Tente novamente.</p>";
-                    resultado.style.display = 'block';
                 }
             } catch (error) {
-                alert("Erro de conexão. Tente novamente.");
+                divErro.innerText = `❌ Ocorreu um erro: ${error.message}`;
+                divErro.style.display = 'block';
             } finally {
                 btn.disabled = false;
-                loading.style.display = 'none';
+                btnTexto.style.display = 'block';
+                spinner.style.display = 'none';
             }
         }
     </script>
