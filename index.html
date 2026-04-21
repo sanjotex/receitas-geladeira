@@ -3,186 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O Que Tem Na Geladeira?</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Pantry Chef | Receitas Inteligentes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff6b6b;
-            --primary-hover: #fa5252;
-            --bg-color: #fdf8f5;
-            --text-main: #2d3436;
-            --text-muted: #636e72;
-            --card-bg: #ffffff;
+            --brand-color: #f97316; /* Laranja moderno, abre o apetite */
+            --brand-hover: #ea580c;
+            --bg-color: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
-            font-family: 'Poppins', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             display: flex;
             justify-content: center;
-            padding: 40px 20px;
             min-height: 100vh;
+            padding: 40px 20px;
         }
 
-        .container {
+        .app-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
+        /* Header Profissional */
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-size: 2.5rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.05em; }
+        .header h1 span { color: var(--brand-color); }
+        .header p { color: var(--text-secondary); font-size: 1.1rem; margin-top: 8px; }
+
+        /* Card de Input */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
         }
 
-        .header h1 {
-            color: var(--primary);
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
-        }
-
-        .header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
-
-        .input-card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
+        .input-group label {
+            display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 8px; color: var(--text-main);
         }
 
         textarea {
-            width: 100%;
-            height: 120px;
-            padding: 15px;
-            border: 2px solid #edf2f7;
-            border-radius: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            color: var(--text-main);
-            resize: none;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
+            width: 100%; height: 120px; padding: 16px;
+            border: 1px solid var(--border-color); border-radius: 12px;
+            font-size: 1rem; color: var(--text-main); resize: none;
+            transition: all 0.2s ease; background-color: #f8fafc;
         }
 
         textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
-        }
-
-        textarea::placeholder {
-            color: #a0aec0;
+            outline: none; border-color: var(--brand-color); background-color: var(--surface);
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
         }
 
         button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 16px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 12px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
+            width: 100%; margin-top: 20px; background-color: var(--text-main); color: white;
+            border: none; padding: 16px; font-size: 1.05rem; font-weight: 600;
+            border-radius: 12px; cursor: pointer; transition: all 0.2s ease;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
         }
 
-        button:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
-        }
+        button:hover { background-color: #334155; transform: translateY(-1px); }
+        button:disabled { background-color: #cbd5e1; cursor: wait; transform: none; }
 
-        button:disabled {
-            background-color: #fab1b1;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+        /* Loader estilo Apple */
+        .loader {
+            display: none; width: 20px; height: 20px;
+            border: 2px solid rgba(255,255,255,0.3); border-radius: 50%;
+            border-top-color: white; animation: spin 0.8s linear infinite;
         }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Animação de Carregamento */
-        .spinner {
-            display: none;
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .resultado-card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Estilizando o HTML que a IA devolve */
-        .resultado-card h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 20px; border-bottom: 2px solid #fdf8f5; padding-bottom: 10px;}
-        .resultado-card h3 { color: var(--text-main); font-size: 1.3rem; margin: 20px 0 10px 0; }
-        .resultado-card ul, .resultado-card ol { margin-left: 20px; color: var(--text-muted); line-height: 1.8; margin-bottom: 15px;}
-        .resultado-card li { margin-bottom: 8px; }
-        .resultado-card p { color: var(--text-muted); line-height: 1.6; }
+        /* Card da Receita Gerada */
+        #resultado-container { display: none; }
         
+        .recipe-header { border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 24px; }
+        .recipe-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
+        
+        .tags { display: flex; gap: 12px; }
+        .tag {
+            background-color: #fff7ed; color: var(--brand-hover);
+            padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+        }
+
+        .section-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 16px; color: var(--text-main); }
+        
+        ul.ingredient-list { list-style: none; margin-bottom: 32px; }
+        ul.ingredient-list li {
+            padding: 12px 0; border-bottom: 1px solid #f1f5f9; color: var(--text-secondary);
+            display: flex; align-items: center;
+        }
+        ul.ingredient-list li::before { content: "•"; color: var(--brand-color); font-weight: bold; margin-right: 12px; }
+
+        ol.step-list { margin-left: 20px; color: var(--text-secondary); margin-bottom: 32px; }
+        ol.step-list li { padding-left: 8px; margin-bottom: 16px; line-height: 1.6; }
+
+        .chef-tip {
+            background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #166534;
+            padding: 16px; border-radius: 12px; font-size: 0.95rem; line-height: 1.5;
+        }
+
         .erro-msg {
-            color: #d63031;
-            background-color: #ff767522;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-size: 0.95rem;
-            display: none;
-            text-align: center;
+            background-color: #fef2f2; color: #991b1b; border: 1px solid #fecaca;
+            padding: 16px; border-radius: 12px; margin-top: 16px; font-size: 0.9rem; display: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="app-container">
         <div class="header">
-            <h1>Geladeira Mágica ✨</h1>
-            <p>Diga o que você tem, nós dizemos o que comer.</p>
+            <h1>Pantry<span>Chef</span></h1>
+            <p>A inteligência artificial transformando sua despensa em alta gastronomia.</p>
         </div>
 
-        <div class="input-card">
-            <textarea id="ingredientes" placeholder="Ex: 2 ovos, tomate, cebola e um restinho de queijo..."></textarea>
+        <div class="card">
+            <div class="input-group">
+                <label for="ingredientes">O que temos na geladeira hoje?</label>
+                <textarea id="ingredientes" placeholder="Ex: Meia lata de leite condensado, ovos, pão, farinha..."></textarea>
+            </div>
             
             <button id="btn-gerar" onclick="gerarReceita()">
-                <span id="btn-texto">Criar Minha Receita</span>
-                <div id="spinner" class="spinner"></div>
+                <span id="btn-texto">Gerar Receita Exclusiva</span>
+                <div id="loader" class="loader"></div>
             </button>
             <div id="erro" class="erro-msg"></div>
         </div>
 
-        <div id="resultado" class="resultado-card"></div>
+        <div id="resultado-container" class="card">
+            <div class="recipe-header">
+                <h2 id="r-titulo" class="recipe-title"></h2>
+                <div class="tags">
+                    <span class="tag" id="r-tempo">⏱️ </span>
+                    <span class="tag" id="r-dificuldade">🍳 </span>
+                </div>
+            </div>
+
+            <h3 class="section-title">Ingredientes</h3>
+            <ul id="r-ingredientes" class="ingredient-list"></ul>
+
+            <h3 class="section-title">Modo de Preparo</h3>
+            <ol id="r-passos" class="step-list"></ol>
+
+            <div class="chef-tip">
+                <strong>💡 Dica do Chef:</strong> <span id="r-dica"></span>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -190,22 +164,18 @@
             const ingredientes = document.getElementById('ingredientes').value;
             const btn = document.getElementById('btn-gerar');
             const btnTexto = document.getElementById('btn-texto');
-            const spinner = document.getElementById('spinner');
-            const resultado = document.getElementById('resultado');
+            const loader = document.getElementById('loader');
+            const container = document.getElementById('resultado-container');
             const divErro = document.getElementById('erro');
 
-            if (!ingredientes.trim()) {
-                divErro.innerText = "⚠️ Por favor, digite alguns ingredientes antes de continuar.";
-                divErro.style.display = 'block';
-                return;
-            }
+            if (!ingredientes.trim()) return;
 
-            // Interface de carregamento
+            // Loading state
             divErro.style.display = 'none';
+            container.style.display = 'none';
             btn.disabled = true;
-            btnTexto.style.display = 'none';
-            spinner.style.display = 'block';
-            resultado.style.display = 'none';
+            btnTexto.innerText = "Criando cardápio...";
+            loader.style.display = 'block';
 
             try {
                 const response = await fetch('/api/gerar', {
@@ -216,21 +186,41 @@
 
                 const data = await response.json();
 
-                if (!response.ok) {
-                    throw new Error(data.error || "Erro desconhecido no servidor.");
-                }
+                if (!response.ok) throw new Error(data.error || "Erro de conexão.");
 
-                if (data.receita) {
-                    resultado.innerHTML = data.receita;
-                    resultado.style.display = 'block';
-                }
+                // Preenchendo os dados estruturados na tela
+                document.getElementById('r-titulo').innerText = data.titulo;
+                document.getElementById('r-tempo').innerText = `⏱️ ${data.tempo}`;
+                document.getElementById('r-dificuldade').innerText = `🍳 Dificuldade: ${data.dificuldade}`;
+                document.getElementById('r-dica').innerText = data.dica;
+
+                // Montando a lista de ingredientes
+                const ulIngredientes = document.getElementById('r-ingredientes');
+                ulIngredientes.innerHTML = '';
+                data.ingredientes.forEach(ing => {
+                    let li = document.createElement('li');
+                    li.innerText = ing;
+                    ulIngredientes.appendChild(li);
+                });
+
+                // Montando os passos
+                const olPassos = document.getElementById('r-passos');
+                olPassos.innerHTML = '';
+                data.passos.forEach(passo => {
+                    let li = document.createElement('li');
+                    li.innerText = passo;
+                    olPassos.appendChild(li);
+                });
+
+                container.style.display = 'block';
+
             } catch (error) {
-                divErro.innerText = `❌ Ocorreu um erro: ${error.message}`;
+                divErro.innerText = `Erro: ${error.message}`;
                 divErro.style.display = 'block';
             } finally {
                 btn.disabled = false;
-                btnTexto.style.display = 'block';
-                spinner.style.display = 'none';
+                btnTexto.innerText = "Gerar Receita Exclusiva";
+                loader.style.display = 'none';
             }
         }
     </script>
